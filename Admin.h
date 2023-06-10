@@ -11,7 +11,8 @@ public:
 	Admin();
 	Admin(String, String, String, String);
 	void printChoises() const override;
-	//void printPlayers(Vector<Player>&) const override;
+	void printAdmins(Vector<Admin>&) const;
+	void printPlayers(Vector<Player>&) const;
 	Player addPlayer(Vector<Player>& coll);
 	Admin addAdmin(Vector<Admin>&);
 	SuperHero addSuperHero(Vector<SuperHero>&);

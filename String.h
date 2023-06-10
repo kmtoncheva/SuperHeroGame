@@ -9,7 +9,7 @@ class String
 	void copyFrom(const String& data);
 	void free();
 
-	explicit String(size_t capacity); //for memory allocation. How much bytes to allocate
+	explicit String(size_t capacity); 
 public:
 
 	String();
@@ -33,7 +33,6 @@ public:
 
 	friend String operator+(const String& lhs, const String& rhs);
 	friend std::istream& operator>>(std::istream&, String& str);
-	//friend std::istream& operator>>(std::istream& is, String& obj);
 };
 
 std::ostream& operator<<(std::ostream& os, const String& str);

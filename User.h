@@ -4,7 +4,6 @@
 class User
 {
 protected:
-	//size_t ID;
 	String name;
 	String userName;
 	String password;
@@ -17,8 +16,6 @@ public:
 	User();
 	User(String, String, String, String);
 	virtual void printChoises() const = 0;
-	//virtual void printPlayers(Vector<Player>&) const = 0; vector<user>???
-	//virtual void deletePlayer() = 0;
-	//virtual User& peekPlayer() const = 0;
+	virtual ~User() = default;
 };
 
