@@ -13,9 +13,10 @@ public:
 	void printChoises() const override;
 	void printAdmins(Vector<Admin>&) const;
 	void printPlayers(Vector<Player>&) const;
-	Player addPlayer(Vector<Player>& coll);
+	Player addPlayer(Vector<Player>&);
 	Admin addAdmin(Vector<Admin>&);
 	SuperHero addSuperHero(Vector<SuperHero>&);
+	void deleteAccount(Vector<Player>&, Vector<SuperHero>&);
 	friend std::ostream& operator<<(std::ostream&, const Admin&);
 };
 

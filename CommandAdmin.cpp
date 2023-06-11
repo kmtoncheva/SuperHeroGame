@@ -4,6 +4,9 @@
 Admin& CommandAdmin::signInAdmin(Vector<Admin>& admColl) {
 	bool logged = false;
 	static int count = 0;
+	if (count == 3) {
+		throw std::invalid_argument("Sorry, you do not have more attempts!");
+	}
 	String _userName;
 	String _pass;
 	if (count != 0) {
@@ -38,6 +41,7 @@ Admin& CommandAdmin::signInAdmin(Vector<Admin>& admColl) {
 bool CommandAdmin::choiseForAdmins(Admin& adm, Vector<Admin>& admColl, Vector<Player>& plColl, Vector<SuperHero>& heroColl) {
 	String choise;
 	std::cout << std::endl;
+	std::cout << "->";
 	std::cin >> choise;
 	if (choise == "Add new admin" || choise == "add new admin") {
 		Admin res = adm.addAdmin(admColl);
@@ -67,6 +71,10 @@ bool CommandAdmin::choiseForAdmins(Admin& adm, Vector<Admin>& admColl, Vector<Pl
 		adm.printPlayers(plColl);
 		return true;
 	}
+	if (choise == "Delete player" || choise == "delete player") {
+		adm.deleteAccount(plColl, heroColl);
+		return true;
+	}
 	else {
 		std::cout << "Please enter a valid turn! : ";
 		bool res = choiseForAdmins(adm, admColl, plColl, heroColl);
@@ -75,9 +83,16 @@ bool CommandAdmin::choiseForAdmins(Admin& adm, Vector<Admin>& admColl, Vector<Pl
 	}
 }
 
-
 void CommandAdmin::execute(Vector<Admin>& admColl, Vector<Player>& plColl, Vector<SuperHero>& heroColl) {
-	Admin adminLogged = signInAdmin(admColl);
+	Admin* adminLoggedPtr = nullptr;
+	try {
+		adminLoggedPtr = &signInAdmin(admColl);
+	}
+	catch (std::invalid_argument& exc) {
+		std::cout << std::endl << exc.what() << std::endl;
+		return;
+	}
+	Admin& adminLogged = *adminLoggedPtr;
 	size_t counter = 0;
 	for (size_t i = 0; i < heroColl.size(); i++)
 	{

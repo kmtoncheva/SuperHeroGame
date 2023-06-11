@@ -3,8 +3,14 @@
 
 
 Player& CommandPlayer::signInPlayer(Vector<Player>& coll) {
+	if (coll.size() == 0) {
+		throw std::invalid_argument("There are no players!");
+	}
 	bool logged = false;
 	static int count = 0;
+	if (count == 3) {
+		throw std::invalid_argument("Sorry, you do not have more attempts!");
+	}
 	String _userName;
 	String _pass;
 	if (count != 0) {
@@ -35,52 +41,66 @@ Player& CommandPlayer::signInPlayer(Vector<Player>& coll) {
 		return res;
 	}
 }
-bool CommandPlayer::choiseForPlayer(Player& player, Vector<Player>& plColl, Vector<SuperHero>& heroColl) {
+char CommandPlayer::choiseForPlayer(Player& player, Vector<Player>& plColl, Vector<SuperHero>& heroColl) {
 	String choise;
-	std::cout << std::endl;
+	std::cout << std::endl << "->";
 	std::cin >> choise;
 	if (choise == "See all players" || choise == "see all players") {
 		player.printPlayers(plColl);
-		return true;
+		return 'i'; // it is returning info, not an action
 	}
 	if (choise == "Sign out" || choise == "sign out") {
 		std::cout << "\nGoodbye! See you again!\n\n";
-		return false;
+		return 'q'; // quit
 	}
 	if (choise == "Display market" || choise == "display market") {
 		player.displayMarket(heroColl);
-		return true;
+		return 'i'; 
 	}
 	if (choise == "Buy new super hero" || choise == "buy new super hero") {
 		player.buySuperHero(heroColl);
-		return true;
+		return 'a';
+	}
+	if (choise == "Delete my account" || choise == "delete my account") {
+		player.deleteMyself(plColl, heroColl);
+		return 'q';
+	}
+	if (choise == "Show balance" || choise == "show balance") {
+		player.showBalance();
+		return 'i';
 	}
 	else {
 		std::cout << "Please enter a valid turn! ";
-		bool res = choiseForPlayer(player, plColl, heroColl);
+		char res = choiseForPlayer(player, plColl, heroColl);
 		return res;
 	}
 }
 
 void CommandPlayer::execute(Vector<Admin>& admColl, Vector<Player>& plColl, Vector<SuperHero>& heroColl) {
-	Player& playerLogged = signInPlayer(plColl);
+	Player* playerLoggedPtr = nullptr;
+	try {
+		playerLoggedPtr = &signInPlayer(plColl);
+	}
+	catch (std::invalid_argument& exc) {
+		std::cout << std::endl << exc.what() << std::endl;
+		return;
+	}
+	Player& playerLogged = *playerLoggedPtr;
 	playerLogged.printChoises();
-	size_t index = 0;
-	bool toContinue = true;
-	for (index = 0; index < 3; index++)
-	{
+	size_t counter = 0;
+	char toContinue = 'i'; // i - info / a - action / q - quit
+	while (toContinue == 'i' || toContinue == 'a') {
+		if (counter == 3) {
+			std::cout << "\nSorry! You have no more turns! See you soon!\n\n";
+			LogCommand commandL;
+			commandL.execute(admColl, plColl, heroColl);
+			return;
+		}
 		toContinue = choiseForPlayer(playerLogged, plColl, heroColl);
-		if (toContinue == false) {
-			break;
+		if (toContinue == 'a') {
+			counter++;
 		}
 	}
-	if (toContinue == false) {
 		LogCommand temp;
 		temp.execute(admColl, plColl, heroColl);
-	}
-	if (index == 3) {
-		std::cout << "\nSorry! You have no more turns! See you soon!\n\n";
-		LogCommand commandL;
-		commandL.execute(admColl, plColl, heroColl);
-	}
 }

@@ -14,7 +14,9 @@ LogCommand::LogCommand() {
 void LogCommand::execute(Vector<Admin>& admColl, Vector<Player>& plColl, Vector<SuperHero>& heroColl) {
 	char chosen = 0;
 	std::cout << "--> Press 1 to sign in as an administrator" << std::endl;
-	std::cout << "--> Press 2 to sign in as a player" << std::endl;
+	if (plColl.size() != 0) {
+		std::cout << "--> Press 2 to sign in as a player" << std::endl;
+	}
 	std::cout << "--> Press Q to quit" << std::endl;
 	std::cin >> chosen;
 	if (chosen == '1') {
@@ -32,7 +34,7 @@ void LogCommand::execute(Vector<Admin>& admColl, Vector<Player>& plColl, Vector<
 		return;
 	}
 	else if (chosen != '1' && chosen != '1' && chosen != '2') {
-		std::cout << "Please enter a valid turn! : ";
+		std::cout << "Please enter a valid turn! : \n";
 		execute(admColl, plColl, heroColl);
 	}
 }

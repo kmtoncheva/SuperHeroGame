@@ -1,7 +1,9 @@
 #pragma once
 #include <iostream>
+
 template <typename T>
 class Vector {
+private:
 	T* data;
 	size_t _size = 0;
 	size_t _capacity = 0;
@@ -19,7 +21,6 @@ public:
 	~Vector();
 	size_t size() const;
 	size_t capacity() const;
-
 	bool isEmpty() const;
 	void push_back(const T&);
 	void push_back(T&&);
@@ -36,8 +37,7 @@ public:
 	T& back();
 	const T& back() const;
 	void erase(size_t);
-
-};
+}; 
 
 template <typename T>
 void Vector<T>::copyFrom(const Vector<T>& other) {

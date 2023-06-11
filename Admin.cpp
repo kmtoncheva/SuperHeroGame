@@ -1,4 +1,5 @@
 #include "Admin.h"
+#include "Player.h"
 
 Admin::Admin() : User() {}
 Admin::Admin(String _name, String _email, String _user, String _pass) 
@@ -174,25 +175,81 @@ void Admin::printAdmins(Vector<Admin>& admColl) const {
 }
 
 void Admin::printPlayers(Vector<Player>& coll) const {
+	if (coll.size() == 0) {
+		std::cout << "There are no players!\n";
+		return;
+	}
 	std::cout << std::endl;
 	for (size_t i = 0; i < coll.size(); i++)
 	{
-		std::cout << " - Name: " << coll[i].getName() << ", email: " << coll[i].getEmail() << ", username: "
-			<< coll[i].getUserName() << ", password: " << coll[i].getPass() << ", balance: " << coll[i].getMoney()
-			<< ", heroes: ";
+		std::cout << " - Name: " << coll[i].getName() << ", Email: " << coll[i].getEmail() << ", Username: "
+			<< coll[i].getUserName() << ", Password: " << coll[i].getPass() << ", Balance: " << coll[i].getMoney() << "$"
+			<< ", Super Heroes: ";
 		if (coll[i].myHeroes.size() == 0)
-			std::cout << "No heroes";
+			std::cout << "no heroes";
 		for (size_t j = 0; j < coll[i].myHeroes.size(); j++)
 		{
 			if (j == coll[i].myHeroes.size() - 1) {
-				std::cout << coll[i].myHeroes[j].getNickname() << "/" << coll[i].myHeroes[j].getPowerTypeString() << "/score:" <<
+				std::cout << coll[i].myHeroes[j].getNickname() << " / " << coll[i].myHeroes[j].getPowerTypeString() << " / Score:" <<
 					coll[i].myHeroes[j].getPowerSize();
 			}
 			else {
-				std::cout << coll[i].myHeroes[j].getNickname() << "/" << coll[i].myHeroes[j].getPowerTypeString() << "/score:" <<
+				std::cout << coll[i].myHeroes[j].getNickname() << " / " << coll[i].myHeroes[j].getPowerTypeString() << " / Score:" <<
 					coll[i].myHeroes[j].getPowerSize() << ", ";
 			}
 		}
 		std::cout << std::endl;
 	}
+}
+
+void Admin::deleteAccount(Vector<Player>& plColl, Vector<SuperHero>& heroColl) {
+	if (plColl.size() == 0) {
+		std::cout << "There are no players in the game! Please, enter another turn!\n\n";
+		return;
+	}
+	String userName;
+	String myPass;
+	size_t index = 0;
+	size_t count = 0;
+	bool found = false;
+	std::cout << "\nEnter the username of the player you want to delete: ";
+	std::cin >> userName;
+	for (size_t i = 0; i < plColl.size(); i++)
+	{
+		if (userName == plColl[i].getUserName()) {
+			found = true;
+			index = i;
+			break;
+		}
+	}
+	while (!found) {
+		std::cout << "Sorry, we could't find player with this username! Try again:";
+		std::cin >> userName;
+		for (size_t i = 0; i < plColl.size(); i++)
+		{
+			if (userName == plColl[i].getUserName()) {
+				index = i;
+				found = true;
+				break;
+			}
+		}
+	}
+	std::cout << "Confirm with your password: ";
+	std::cin >> myPass;
+	while (myPass != this->getPass()) {
+		std::cout << "Wrong password! Try again : ";
+		std::cin >> myPass;
+	}
+	if (plColl[index].haveHeroes()) {
+		for (size_t i = 0; i < heroColl.size(); i++)
+		{
+			if (heroColl[i].getSold() == plColl[index].getPass()) {
+				heroColl[i].setSold("0");
+				heroColl[i].setInTheGame(false);
+				heroColl[i].setAttack(false);
+			}
+		}
+	}
+	std::cout << "You deleted " << plColl[index].getName() << " successfully!\n";
+	plColl.erase(index);
 }
