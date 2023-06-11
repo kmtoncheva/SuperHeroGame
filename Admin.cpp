@@ -168,7 +168,7 @@ void Admin::printAdmins(Vector<Admin>& admColl) const {
 	std::cout << std::endl;
 	for (size_t i = 0; i < admColl.size(); i++)
 	{
-		std::cout << " - " << admColl[i].getName() << ", " << admColl[i].getEmail() << std::endl;
+		std::cout << " - Name:" << admColl[i].getName() << ", Email: " << admColl[i].getEmail() << std::endl;
 	}
 	std::cout << std::endl;
 	std::cout << "What is your next turn?\n";
