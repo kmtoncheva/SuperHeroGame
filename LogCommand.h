@@ -1,5 +1,6 @@
 #pragma once
 #include "Command.h"
+
 class LogCommand final : public Command
 {
 	static size_t counter;

@@ -1,5 +1,6 @@
 #pragma once
 #include "Command.h"
+
 class CommandAdmin final : public Command
 {
 	Admin& signInAdmin(Vector<Admin>&);

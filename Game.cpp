@@ -5,9 +5,9 @@
 
 
 void Game::run() {
-	static Vector<Admin> adminsCollection;
-	static Vector<Player> playersCollection;
-	static Vector<SuperHero> heroesCollection;
+	Vector<Admin> adminsCollection;
+	Vector<Player> playersCollection;
+	Vector<SuperHero> heroesCollection;
 	FileHandler file;
 	file.uploadFromFile(adminsCollection, playersCollection, heroesCollection, "AdminCollection.txt", "PlayersCollection.txt", "SuperHeroesCollection.txt");
 	LogCommand command;

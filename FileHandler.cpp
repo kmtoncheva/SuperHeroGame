@@ -7,7 +7,6 @@ bool FileHandler::isEmpty(std::ifstream& file) const {
 	return (file.peek() == EOF);
 }
 
-
 void FileHandler::uploadFromFileAdmin(Vector<Admin>& coll, const char* name) {
 	std::ifstream file(name, std::ios::in);
 	if (!file.is_open()) {
@@ -179,8 +178,14 @@ void FileHandler::saveToFileSuperHero(Vector<SuperHero>& coll, const char* name)
 	for (size_t i = 0; i < coll.size(); i++)
 	{
 		if (i == coll.size() - 1) {
+			if (coll[i].getNickname() == "error" || coll[i].getNickname() == "already saved") {
+				continue;
+			}
 			file << coll[i];
 			break;
+		}
+		if (coll[i].getNickname() == "error" || coll[i].getNickname() == "already saved") {
+			continue;
 		}
 		file << coll[i] << std::endl;
 	}
@@ -200,7 +205,6 @@ void FileHandler::uploadSuperHeroesCollection(Vector<Player>& plColl, Vector<Sup
 		}
 	}
 }
-
 
 void FileHandler::uploadFromFile(Vector<Admin>& admColl, Vector<Player>& plColl, Vector<SuperHero>& heroColl, const char* admName, const char* plName, const char* heroName) {
 	uploadFromFileAdmin(admColl, admName);

@@ -2,20 +2,33 @@
 #include "LogCommand.h"
 
 Admin& CommandAdmin::signInAdmin(Vector<Admin>& admColl) {
+
 	bool logged = false;
 	static int count = 0;
-	if (count == 3) {
+	static int wrongTry = 0;
+	//static bool faileToLog = false;
+
+	if (wrongTry == 3) {
 		throw std::invalid_argument("Sorry, you do not have more attempts!");
 	}
+
 	String _userName;
 	String _pass;
-	if (count != 0) {
+
+	if (wrongTry == -1) {
+		std::cout << "--> Enter username: ";
+		std::cin.ignore();
+		std::cin >> _userName;
+		std::cout << "--> Enter password: ";
+		std::cin >> _pass;
+	}
+	if (count != 0 && wrongTry != -1) {
 		std::cout << "--> Enter username: ";
 		std::cin >> _userName;
 		std::cout << "--> Enter password: ";
 		std::cin >> _pass;
 	}
-	if (count == 0) {
+	if (count == 0 && wrongTry != -1) {
 		std::cout << "--> Enter username: ";
 		std::cin.ignore();
 		std::cin >> _userName;
@@ -26,12 +39,16 @@ Admin& CommandAdmin::signInAdmin(Vector<Admin>& admColl) {
 	{
 		if (admColl[i].getUserName() == _userName && admColl[i].getPass() == _pass) {
 			logged = true;
+			//faileToLog = false;
+			wrongTry = -1;
 			std::cout << std::endl << admColl[i].getName() << " you have successfully logged in as administrator!\n";
 			return admColl[i];
 		}
 	}
 	if (!logged) {
+		//faileToLog = true;
 		count++;
+		wrongTry++;
 		std::cout << "Wrong username or password! Please try again!\n";
 		Admin& res = signInAdmin(admColl);
 		return res;
@@ -39,10 +56,12 @@ Admin& CommandAdmin::signInAdmin(Vector<Admin>& admColl) {
 }
 
 bool CommandAdmin::choiseForAdmins(Admin& adm, Vector<Admin>& admColl, Vector<Player>& plColl, Vector<SuperHero>& heroColl) {
+
 	String choise;
 	std::cout << std::endl;
 	std::cout << "->";
 	std::cin >> choise;
+
 	if (choise == "Add new admin" || choise == "add new admin") {
 		Admin res = adm.addAdmin(admColl);
 		admColl.push_back(res);
@@ -53,13 +72,18 @@ bool CommandAdmin::choiseForAdmins(Admin& adm, Vector<Admin>& admColl, Vector<Pl
 		plColl.push_back(res);
 		return true;
 	}
-
 	if (choise == "Sign out" || choise == "sign out") {
 		std::cout << "\nGoodbye! See you again!\n\n";
 		return false;
 	}
 	if (choise == "Add new super hero" || choise == "add new super hero") {
 		SuperHero res = adm.addSuperHero(heroColl);
+		if (res.getNickname() == "error" && res.getName() == "error") {
+			return true;
+		}
+		if (res.getName() == "already saved" || res.getNickname() == "already saved") {
+			return true;
+		}
 		heroColl.push_back(res);
 		return true;
 	}
@@ -79,7 +103,6 @@ bool CommandAdmin::choiseForAdmins(Admin& adm, Vector<Admin>& admColl, Vector<Pl
 		std::cout << "Please enter a valid turn! : ";
 		bool res = choiseForAdmins(adm, admColl, plColl, heroColl);
 		return res;
-		//throw std::invalid_argument("Invalid input");
 	}
 }
 

@@ -1,5 +1,4 @@
 #include "Admin.h"
-#include "Player.h"
 
 Admin::Admin() : User() {}
 Admin::Admin(String _name, String _email, String _user, String _pass) 
@@ -16,7 +15,60 @@ SuperHero Admin::addSuperHero(Vector<SuperHero>& coll) {
 	String nickname;
 	String tempPowerType;
 	PowerType powerType;
-	size_t powerSize, price = 0;
+	size_t powerSize = 0;
+	size_t price = 0;
+	size_t soldCount = 0;
+
+	for (size_t i = 0; i < coll.size(); i++)
+	{
+		if ((coll[i].getInTheGame() == false) && (coll[i].getSold() != "0")) {
+			soldCount++;
+		}
+	}
+
+	if (soldCount != 0) {
+		std::cout << "Already saved heroes you can choose from: \n\n";
+
+		for (size_t i = 0; i < coll.size(); i++)
+		{
+			if ((coll[i].getInTheGame() == false) && (coll[i].getSold() != "0")) {
+				std::cout << " - Name:" << coll[i].getName() << ", Nickname: " << coll[i].getNickname() << ", Type: " << coll[i].ToString(coll[i].getPowerType()) << ", Power: "
+					<< coll[i].getPowerSize() << ", Price: " << coll[i].getPrice() << "$" << std::endl;
+			}
+		}
+		std::cout << std::endl;
+		String ans;
+		std::cout << "Do you want to add some of them? (yes/no) ";
+		std::cin >> ans;
+		if (ans == "yes") {
+			String tempNickname;
+			bool checkNickname = false;
+			std::cout << "Enter the nickname of the super hero you want to add again: ";
+			std::cin >> tempNickname;
+			for (size_t i = 0; i < coll.size(); i++)
+			{
+				if (tempNickname == coll[i].getNickname()) {
+					coll[i].setSold("0");
+					coll[i].setInTheGame(true);
+					std::cout << "Congratulations! You added " << coll[i].getName() << " again in the game!\n";
+					checkNickname = true;
+					SuperHero saved("already saved", "already saved", "already saved", powerSize, price, false, "0", false);
+					return saved;
+				}
+			}
+			if (!checkNickname) {
+				std::cout << "Sorry, wrong nickname! Try again later!\n";
+				SuperHero error("error", "error", "error", powerSize, price, false, "0", false);
+				return error;
+			}
+		}
+		if (ans == "no") {
+			std::cout << "Then add new super hero!\n";
+		}
+		else {
+			std::cout << "Take this answer for 'no'. Then add new super hero!\n";
+		}
+	}
 	std::cout << "-> Enter name: ";
 	std::cin >> name;
 	if (name == "") {
@@ -53,6 +105,7 @@ SuperHero Admin::addSuperHero(Vector<SuperHero>& coll) {
 }
 
 Player Admin::addPlayer(Vector<Player>& coll) {
+
 	String name, email, userName, pass;
 	std::cout << "Enter name: ";
 	std::cin >> name;
@@ -60,6 +113,7 @@ Player Admin::addPlayer(Vector<Player>& coll) {
 	std::cin >> email;
 	std::cout << "Enter username: ";
 	std::cin >> userName;
+
 	if (userName.length() > 16) {
 		std::cout << "This username is too long! It should be up to 16  characters! Enter new username: ";
 		std::cin >> userName;
@@ -78,7 +132,7 @@ Player Admin::addPlayer(Vector<Player>& coll) {
 	std::cout << "Enter password: ";
 	std::cin >> pass;
 	while (!checkPass(pass)) {
-		std::cout << "Your password should include at least 1 uppecase, 1 lowercase and 1 digit! Enter new password: ";
+		std::cout << "Your password is not safe enough! (at least 1 uppecase, 1 lowercase and 1 digit) Enter new password: ";
 		std::cin >> pass;
 	}
 	for (size_t i = 0; i < coll.size(); i++)
@@ -95,6 +149,7 @@ Player Admin::addPlayer(Vector<Player>& coll) {
 
 
 Admin Admin::addAdmin(Vector<Admin>& coll) {
+
 	String name;
 	String email;
 	String userName;
@@ -105,6 +160,7 @@ Admin Admin::addAdmin(Vector<Admin>& coll) {
 	std::cin >> email;
 	std::cout << "Enter userName: ";
 	std::cin >> userName;
+
 	if (userName.length() > 16) {
 		std::cout << "This username is too long! It should be up to 16  characters! Enter new username: ";
 		std::cin >> userName;
@@ -143,12 +199,12 @@ void Admin::printChoises() const {
 		<< "\n>>Add new super hero" << "\n>>Delete player" << "\n>>Sign out\n\n";
 }
 
-
-
 bool Admin::checkPass(String _pass) const{
+
 	bool Upper = false;
 	bool Lower = false;
 	bool Num = false;
+
 	for (size_t i = 0; i < _pass.length() + 1; i++)
 	{
 	if (_pass[i] >= 'A' && _pass[i] <= 'Z') {
@@ -168,7 +224,7 @@ void Admin::printAdmins(Vector<Admin>& admColl) const {
 	std::cout << std::endl;
 	for (size_t i = 0; i < admColl.size(); i++)
 	{
-		std::cout << " - Name:" << admColl[i].getName() << ", Email: " << admColl[i].getEmail() << std::endl;
+		std::cout << i + 1 << ".  Name:" << admColl[i].getName() << ", Email: " << admColl[i].getEmail() << std::endl;
 	}
 	std::cout << std::endl;
 	std::cout << "What is your next turn?\n";
@@ -182,20 +238,20 @@ void Admin::printPlayers(Vector<Player>& coll) const {
 	std::cout << std::endl;
 	for (size_t i = 0; i < coll.size(); i++)
 	{
-		std::cout << " - Name: " << coll[i].getName() << ", Email: " << coll[i].getEmail() << ", Username: "
+		std::cout << i + 1 << ". Name: " << coll[i].getName() << ", Email: " << coll[i].getEmail() << ", Username: "
 			<< coll[i].getUserName() << ", Password: " << coll[i].getPass() << ", Balance: " << coll[i].getMoney() << "$"
 			<< ", Super Heroes: ";
 		if (coll[i].myHeroes.size() == 0)
-			std::cout << "no heroes";
+			std::cout << "\n  - no heroes";
 		for (size_t j = 0; j < coll[i].myHeroes.size(); j++)
 		{
 			if (j == coll[i].myHeroes.size() - 1) {
-				std::cout << coll[i].myHeroes[j].getNickname() << " / " << coll[i].myHeroes[j].getPowerTypeString() << " / Score:" <<
+				std::cout << std::endl  << "  - " << coll[i].myHeroes[j].getNickname() << " / " << coll[i].myHeroes[j].getPowerTypeString() << " / Score:" <<
 					coll[i].myHeroes[j].getPowerSize();
 			}
 			else {
-				std::cout << coll[i].myHeroes[j].getNickname() << " / " << coll[i].myHeroes[j].getPowerTypeString() << " / Score:" <<
-					coll[i].myHeroes[j].getPowerSize() << ", ";
+				std::cout << std::endl << "  - " << coll[i].myHeroes[j].getNickname() << " / " << coll[i].myHeroes[j].getPowerTypeString() << " / Score:" <<
+					coll[i].myHeroes[j].getPowerSize();
 			}
 		}
 		std::cout << std::endl;
@@ -246,7 +302,7 @@ void Admin::deleteAccount(Vector<Player>& plColl, Vector<SuperHero>& heroColl) {
 			if (heroColl[i].getSold() == plColl[index].getPass()) {
 				heroColl[i].setSold("0");
 				heroColl[i].setInTheGame(false);
-				heroColl[i].setAttack(false);
+				heroColl[i].setDefense(false);
 			}
 		}
 	}

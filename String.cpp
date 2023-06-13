@@ -82,7 +82,7 @@ void String::copyFrom(const String& other)
 
 String::String(String&& other) noexcept
 {
-	_data = other._data; // to function moveFrom ?
+	_data = other._data; 
 	other._data = nullptr;
 	_length = other._length;
 }

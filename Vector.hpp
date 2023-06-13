@@ -39,6 +39,7 @@ public:
 	void erase(size_t);
 }; 
 
+
 template <typename T>
 void Vector<T>::copyFrom(const Vector<T>& other) {
 	_capacity = other._capacity;

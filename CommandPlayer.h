@@ -4,6 +4,8 @@
 
 class CommandPlayer final: public Command
 {
+private:
+	static size_t counter;
 	Player& signInPlayer(Vector<Player>&);
 	char choiseForPlayer(Player& pl, Vector<Player>& plColl, Vector<SuperHero>& heroColl);
 public:

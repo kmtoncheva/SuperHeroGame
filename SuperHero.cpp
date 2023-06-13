@@ -13,6 +13,7 @@ String SuperHero::ToString(PowerType type) const{
 		break;
 	}
 }
+
 PowerType SuperHero::ToType(const String& str) const{
 	if (str == "Fire" || str == "fire") {
 		return PowerType::Fire;
@@ -25,18 +26,71 @@ PowerType SuperHero::ToType(const String& str) const{
 	}
 }
 
-SuperHero::SuperHero(String _name, String _nickName, String _powerType, size_t _powerSize, size_t _price, bool _attack, String _sold, bool _inTheGame)
-	: name(_name), nickname(_nickName), powerType(ToType(_powerType)), powerSize(_powerSize), price(_price), attack(_attack), sold(_sold), inTheGame(_inTheGame) {}
-
-
+SuperHero::SuperHero(String _name, String _nickName, String _powerType, size_t _powerSize, size_t _price, bool _defense, String _sold, bool _inTheGame)
+	: name(_name), nickname(_nickName), powerType(ToType(_powerType)), powerSize(_powerSize), price(_price), defense(_defense), sold(_sold), inTheGame(_inTheGame) {}
 
 std::ostream& operator<<(std::ostream& os, const SuperHero& obj) {
 	os << obj.name << "," << obj.nickname << "," << obj.ToString(obj.powerType) << "," << obj.powerSize << "," << obj.price
-		<< "," << obj.attack << "," << obj.sold << "," << obj.inTheGame;
+		<< "," << obj.defense << "," << obj.sold << "," << obj.inTheGame;
 	return os;
 }
 
+int SuperHero:: ComparePowerSize(SuperHero& other) const{
+	if (this->getPowerSize() > other.getPowerSize()) {
+		return 1;
+	}
+	if (this->getPowerSize() == other.getPowerSize()) {
+		return 0;
+	}
+	if (this->getPowerSize() < other.getPowerSize()) {
+		return -1;
+	}
+}
 
+void SuperHero::comparePowerType(SuperHero& other) {
+	size_t temp = 0;
+	switch (powerType)
+	{
+	case PowerType::Fire:
+		if (other.powerType == PowerType::Water) {
+			temp = 2 * (other.getPowerSize());
+			other.setPowerSize(temp);
+			return;
+		}
+		if (other.powerType == PowerType::Earth) {
+			temp = 2 * (this->getPowerSize());
+			this->setPowerSize(temp);
+			return;
+		}
+		break;
+	case PowerType::Water:
+		if (other.powerType == PowerType::Earth) {
+			temp = 2 * other.getPowerSize();
+			other.setPowerSize(temp);
+			return;
+		}
+		if (other.powerType == PowerType::Fire) {
+			temp = 2 * (this->getPowerSize());
+			this->setPowerSize(temp);
+			return;
+		}
+		break;
+	case PowerType::Earth:
+		if (other.powerType == PowerType::Fire) {
+			temp = 2 * other.getPowerSize();
+			other.setPowerSize(temp);
+			return;
+		}
+		if (other.powerType == PowerType::Water) {
+			temp = 2 * (this->getPowerSize());
+			this->setPowerSize(temp);
+			return;
+		}
+		break;
+	default:
+		break;
+	}
+}
 
 const String SuperHero::getName() const {
 	return name;
@@ -47,8 +101,8 @@ const String SuperHero::getNickname() const {
 const PowerType SuperHero::getPowerType() const {
 	return powerType;
 }
-bool SuperHero::getAttack() const{
-	return attack;
+bool SuperHero::getDefense() const{
+	return defense;
 }
 String SuperHero::getSold() const{
 	return sold;
@@ -68,9 +122,15 @@ void SuperHero::setSold(String _sold) {
 void SuperHero::setInTheGame(bool _inTheGame) {
 	inTheGame = _inTheGame;
 }
-void SuperHero::setAttack(bool _attack) {
-	attack = _attack;
+void SuperHero::setDefense(bool _defense) {
+	defense = _defense;
 }
 String SuperHero::getPowerTypeString() const {
 	return ToString(powerType);
+}
+void SuperHero::setPowerSize(size_t ps) {
+	powerSize = ps;
+}
+void SuperHero::boostPowerSize(size_t add) {
+	powerSize += add;
 }
