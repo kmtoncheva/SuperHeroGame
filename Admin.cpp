@@ -27,7 +27,7 @@ SuperHero Admin::addSuperHero(Vector<SuperHero>& coll) {
 	}
 
 	if (soldCount != 0) {
-		std::cout << "Already saved heroes you can choose from: \n\n";
+		std::cout << "Already saved Heroes you can choose from: \n\n";
 
 		for (size_t i = 0; i < coll.size(); i++)
 		{
@@ -43,7 +43,7 @@ SuperHero Admin::addSuperHero(Vector<SuperHero>& coll) {
 		if (ans == "yes") {
 			String tempNickname;
 			bool checkNickname = false;
-			std::cout << "Enter the nickname of the super hero you want to add again: ";
+			std::cout << "Enter the nickname of the Super Hero you want to add again: ";
 			std::cin >> tempNickname;
 			for (size_t i = 0; i < coll.size(); i++)
 			{
@@ -63,7 +63,7 @@ SuperHero Admin::addSuperHero(Vector<SuperHero>& coll) {
 			}
 		}
 		if (ans == "no") {
-			std::cout << "Then add new super hero!\n";
+			std::cout << "Then add new Super Hero!\n";
 		}
 		else {
 			std::cout << "Take this answer for 'no'. Then add new super hero!\n";
@@ -75,7 +75,7 @@ SuperHero Admin::addSuperHero(Vector<SuperHero>& coll) {
 		std::cout << "Please enter a valid name : ";
 		std::cin >> name;
 	}
-	std::cout << "-> Enter SuperHero nickname: ";
+	std::cout << "-> Enter Super Hero nickname: ";
 	std::cin >> nickname;
 	if (nickname == "") {
 		std::cout << "Please enter a valid nickname : ";
@@ -88,18 +88,18 @@ SuperHero Admin::addSuperHero(Vector<SuperHero>& coll) {
 			std::cin >> nickname;
 		}
 	}
-	std::cout << "-> Enter SuperHero Power (Fire, Water, Earth): ";
+	std::cout << "-> Enter Super Hero Power (Fire, Water, Earth): ";
 	std::cin >> tempPowerType;
 	if ((tempPowerType != "Fire") && (tempPowerType != "fire") && (tempPowerType != "Water") && (tempPowerType != "water") && (tempPowerType != "Earth") && (tempPowerType != "earth")) {
 		std::cout << "Please enter one of the Powers above! : ";
 		std::cin >> tempPowerType;
 	}
-	std::cout << "-> Enter SuperHero power (score): ";
+	std::cout << "-> Enter Super Hero power score (please, enter a whole number): ";
 	std::cin >> powerSize;
-	std::cout << "-> Enter SuperHero price: ";
+	std::cout << "-> Enter Super Hero price (please, enter a whole number): ";
 	std::cin >> price;
 	std::cin.ignore();
-	std::cout << "\nCongratulations! You added the super hero! What is your next turn? \n";
+	std::cout << "\nCongratulations! You added the Super Hero! What is your next turn? \n";
 	SuperHero hero(name, nickname, tempPowerType, powerSize, price, false, "0", false);
 	return hero;
 }
@@ -132,13 +132,13 @@ Player Admin::addPlayer(Vector<Player>& coll) {
 	std::cout << "Enter password: ";
 	std::cin >> pass;
 	while (!checkPass(pass)) {
-		std::cout << "Your password is not safe enough! (at least 1 uppecase, 1 lowercase and 1 digit) Enter new password: ";
+		std::cout << "This password is not safe enough! (at least 1 uppecase, 1 lowercase and 1 digit) Enter new password: ";
 		std::cin >> pass;
 	}
 	for (size_t i = 0; i < coll.size(); i++)
 	{
 		while (pass == coll[i].getPass() || !checkPass(pass)) {
-			std::cout << "This password is not free or it is not save! Please, enter new one: ";
+			std::cout << "This password is not free or it is not safe! Please, enter new one: ";
 			std::cin >> pass;
 		}
 	}
@@ -179,13 +179,13 @@ Admin Admin::addAdmin(Vector<Admin>& coll) {
 	std::cout << "Enter password: ";
 	std::cin >> pass;
 	while (!checkPass(pass)) {
-		std::cout << "Your password should include at least 1 uppecase, 1 lowercase and 1 digit! Enter new password: ";
+		std::cout << "This password is not safe enough! (at least 1 uppecase, 1 lowercase and 1 digit) Enter new password: ";
 		std::cin >> pass;
 	}
 	for (size_t i = 0; i < coll.size(); i++)
 	{
 		while (pass == coll[i].getPass() || !checkPass(pass)) {
-			std::cout << "This password is not free or it is not save! Please, enter new one: ";
+			std::cout << "This password is not free or it is not safe! Please, enter new one: ";
 			std::cin >> pass;
 		}
 	}
@@ -224,7 +224,7 @@ void Admin::printAdmins(Vector<Admin>& admColl) const {
 	std::cout << std::endl;
 	for (size_t i = 0; i < admColl.size(); i++)
 	{
-		std::cout << i + 1 << ".  Name:" << admColl[i].getName() << ", Email: " << admColl[i].getEmail() << std::endl;
+		std::cout << i + 1 << ".  Name: " << admColl[i].getName() << ", Email: " << admColl[i].getEmail() << std::endl;
 	}
 	std::cout << std::endl;
 	std::cout << "What is your next turn?\n";

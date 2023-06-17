@@ -6,7 +6,6 @@ Admin& CommandAdmin::signInAdmin(Vector<Admin>& admColl) {
 	bool logged = false;
 	static int count = 0;
 	static int wrongTry = 0;
-	//static bool faileToLog = false;
 
 	if (wrongTry == 3) {
 		throw std::invalid_argument("Sorry, you do not have more attempts!");
@@ -39,14 +38,12 @@ Admin& CommandAdmin::signInAdmin(Vector<Admin>& admColl) {
 	{
 		if (admColl[i].getUserName() == _userName && admColl[i].getPass() == _pass) {
 			logged = true;
-			//faileToLog = false;
 			wrongTry = -1;
 			std::cout << std::endl << admColl[i].getName() << " you have successfully logged in as administrator!\n";
 			return admColl[i];
 		}
 	}
 	if (!logged) {
-		//faileToLog = true;
 		count++;
 		wrongTry++;
 		std::cout << "Wrong username or password! Please try again!\n";

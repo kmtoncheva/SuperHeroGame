@@ -64,6 +64,7 @@ char CommandPlayer::choiseForPlayer(Player& player, Vector<Player>& plColl, Vect
 		return 'i'; // it is returning info, not an action
 	}
 	if (choise == "Sign out" || choise == "sign out") {
+		player.setLogged(false);
 		std::cout << "\nGoodbye! See you again!\n\n";
 		return 'q'; // quit
 	}

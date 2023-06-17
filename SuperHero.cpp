@@ -47,7 +47,7 @@ int SuperHero:: ComparePowerSize(SuperHero& other) const{
 	}
 }
 
-void SuperHero::comparePowerType(SuperHero& other) {
+void SuperHero::ComparePowerType(SuperHero& other) {
 	size_t temp = 0;
 	switch (powerType)
 	{

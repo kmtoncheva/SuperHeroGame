@@ -6,7 +6,7 @@ size_t LogCommand::counter = 0;
 
 LogCommand::LogCommand() {
 	if (counter == 0) {
-		std::cout << "---> Welcome to SuperHeroes Game! <---\n" << std::endl;
+		std::cout << "---> Welcome to Super Heroes Game! <---\n" << std::endl;
 	}
 	counter++;
 }
